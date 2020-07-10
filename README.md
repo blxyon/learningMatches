@@ -7,11 +7,11 @@ GUI buttons. All the history will be tracked inside a log file called "logGames.
 time you added each entry of points.
 
 Case scenario example:
-1)You play a quick match in your game.
-2)You click add a quick game match related button
-3)You do a long subject read
-4)You click the relevant button
-5)You check your score
+1. You play a quick match in your game.
+1. You click add a quick game match related button.
+1. You do a long subject read.
+1. You click the relevant button.
+1. You check your score.
 
 
 Make sure you have Python 3.8 in your PATH var as "python". otherwise change the bat file accordingy.
