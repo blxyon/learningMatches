@@ -14,19 +14,53 @@ class MainApplication(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent#I guess this says that the parent of itself, the frame is the root, which is passed in the argument called parent
         self.txt = txt#same here
-        parent.geometry("400x100+100+100")
+        parent.geometry("450x200+100+100")
         parent.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.grid_rowconfigure(3,weight=1)
+        self.grid_columnconfigure(0,weight=1)
         
-        self.incButton=tk.Button(text="Add a match played",command=lambda:self.add())
-        self.incButton.pack()
-        self.score=tk.Label(root)
+        self.procastinationFr=tk.Frame(self,background="blue")
+        self.procastinationFr.grid(row=0,column=0,sticky="news")
+
+        self.scoreFr=tk.Frame(self)
+        self.scoreFr.grid(row=1,column=0,sticky="news")
+        
+        self.messageFr=tk.Frame(self)
+        self.messageFr.grid(row=2,column=0,sticky="news")
+        
+        self.prodcutivityFr=tk.Frame(self,background="blue")
+        self.prodcutivityFr.grid(row=3,column=0,sticky="news")
+
+
+        
+        self.incButton=tk.Button(self.procastinationFr,text="Add a quick match played(+1)",command=lambda:self.add(1))
+        self.incButton.grid(row=0,column=0)
+        self.incButton2=tk.Button(self.procastinationFr,text="Add a medium match played(+3)",command=lambda:self.add(3))
+        self.incButton2.grid(row=0,column=1)
+        self.incButton3=tk.Button(self.procastinationFr,text="Add a youtube unproductive video played(+2)",command=lambda:self.add(2))
+        self.incButton3.grid(row=1,column=0)
+        self.incButton4=tk.Button(self.procastinationFr,text="Add an average procastination(+4)",command=lambda:self.add(4))
+        self.incButton4.grid(row=1,column=1)
+        self.incButton5=tk.Button(self.procastinationFr,text="Add a very long procastination(+6)",command=lambda:self.add(6))
+        self.incButton5.grid(row=2,column=0)
+        
+        self.score=tk.Label(self.scoreFr)
         self.configureScore(txt.getLastScore())
-        self.score.pack()
-        self.label=tk.Label(root)
+        self.score.pack()#only one score
+        self.label=tk.Label(self.messageFr)
         self.pickWhatToDo()
-        self.label.pack()
-        self.decButton=tk.Button(text="Add a challenge done",command=lambda:self.dec())
-        self.decButton.pack()
+        self.label.pack()#only one message
+        
+        self.decButton=tk.Button(self.prodcutivityFr,text="Add an easy challenge done(-2)",command=lambda:self.dec(2))
+        self.decButton.grid(row=0,column=0)
+        self.dec2Button=tk.Button(self.prodcutivityFr,text="Add a medium challenge done(-4)",command=lambda:self.dec(4))
+        self.dec2Button.grid(row=0,column=1)
+        self.dec3Button=tk.Button(self.prodcutivityFr,text="Add an hard challenge done(-6)",command=lambda:self.dec(6))
+        self.dec3Button.grid(row=1,column=0)
+        self.dec4Button=tk.Button(self.prodcutivityFr,text="Add a medium read about a subject(-1)",command=lambda:self.dec(1))
+        self.dec4Button.grid(row=1,column=1)
+        self.dec5Button=tk.Button(self.prodcutivityFr,text="Add a long read about a subject(-3)",command=lambda:self.dec(3))
+        self.dec5Button.grid(row=2,column=0)
     def on_closing(self):
         #when closing it will show the warning box function and therefore end the txt file usage
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -40,27 +74,27 @@ class MainApplication(tk.Frame):
             self.score.configure(text=str(-(intScore)))
 
         
-    def add(self):
+    def add(self,addVal):
         #button funct
         lastScore=self.txt.getLastScore()
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")#string format
-        line1="You have added a game at the time: "+dt_string+"\n"
-        line2="Score="+str(lastScore+1)+"\n"
+        line1="You have added a game at the time: "+dt_string+"|-(+"+str(addVal)+")"+"\n"
+        line2="Score="+str(lastScore+addVal)+"\n"
         self.txt.writeAndDisplay(line1)
         self.txt.writeAndDisplay(line2)
-        self.configureScore(lastScore+1)
+        self.configureScore(lastScore+addVal)
         self.pickWhatToDo()
         
-    def dec(self):
+    def dec(self,decVal):
         lastScore=self.txt.getLastScore()
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        line1="You have added a challenge at the time: "+dt_string+"\n"
-        line2="Score="+str(lastScore-1)+"\n"
+        line1="You have added a challenge at the time: "+dt_string+"|-(-"+str(decVal)+")"+"\n"
+        line2="Score="+str(lastScore-decVal)+"\n"
         self.txt.writeAndDisplay(line1)
         self.txt.writeAndDisplay(line2)
-        self.configureScore(lastScore-1)
+        self.configureScore(lastScore-decVal)
         self.pickWhatToDo()
     def pickWhatToDo(self):
         #fancy labels
@@ -132,24 +166,10 @@ class TextHandlerApp():
 if __name__ == "__main__":
     txt=TextHandlerApp()
     root = tk.Tk()
-    MainApplication(root,txt).pack(side="top", fill="both", expand=True)
+    app=MainApplication(root,txt)
+    app.pack(side="top", fill="both", expand=True)
+    
     root.mainloop()
 
 
-
-
-
-
-#tkinter
-
-
-
-    
-
-
-
-
-
-
-root.mainloop()
 
