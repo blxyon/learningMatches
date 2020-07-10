@@ -16,7 +16,7 @@ Case scenario example:
 
 Make sure you have Python 3.8 in your PATH var as "python". otherwise change the bat file accordingy.
 
-##Contributors##
+## Contributors
 
 - Valentin I Burlacu <blxyon@yahoo.com>
 
