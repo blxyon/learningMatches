@@ -17,7 +17,7 @@ Case scenario example:
 (Windows users)Make sure you have Python 3.8 in your PATH var as "python", otherwise change the bat file accordingy.
 
 Another thing to mention is that the txt file will only be updated after you closed the application. In
-order to check the current "logGames.txt" check your console.
+order to check the current state of "logGames.txt" check your console.
 
 ## Contributors
 
