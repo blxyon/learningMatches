@@ -1,4 +1,4 @@
-**Version 1.0.0**
+**Version 1.1.0**
 
 A Python 3.8 program which will be tracking the number of unproductive and productive actions which 
 you are doing based on a score. The more productive you are the more positive the app message will be.
@@ -14,7 +14,10 @@ Case scenario example:
 1. You check your score.
 
 
-Make sure you have Python 3.8 in your PATH var as "python". otherwise change the bat file accordingy.
+(Windows users)Make sure you have Python 3.8 in your PATH var as "python", otherwise change the bat file accordingy.
+
+Another thing to mention is that the txt file will only be updated after you closed the application. In
+order to check the current "logGames.txt" check your console.
 
 ## Contributors
 
