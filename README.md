@@ -29,7 +29,7 @@ order to check the current state of "logGames.txt" check your console.
 
 (V1.2.0) Reminders manager added
 
-(V1.1.0) Transformed it into oop
+(V1.1.0) Transformed it into oop with more functionality buttons (+6,+4...) (-6,-4...)
 
 (V1.0.0) Basic (+1) (-1) points app 
 
