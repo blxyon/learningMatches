@@ -1,5 +1,6 @@
 # Updates
 
+1. Reminders manager
 1. Floating point measurements
 1. Statistics
 1. Graph representation for the relevant statistics
