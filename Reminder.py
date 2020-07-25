@@ -1,5 +1,7 @@
 from datetime import datetime
 import tkinter as tk
+
+
 def getCurrentTimeToList():
     now = datetime.now()
     dt_string = now.strftime("%d")
@@ -45,31 +47,35 @@ class ReminderFr(tk.Frame):
         if(month!="Month"):
             year=self.remainderYear.get()
             day=self.remainderDay.get()
-            remainderStr=self.remainderVar.get()
-            if(remainderStr==""):
+            reminderStr=self.remainderVar.get()
+            if(reminderStr==""):
                 remainderStr="_not_specified"
             now = datetime.now()
             todaysDate=now.date()
             dt_string = ("%s/%s/%s"%(day,month,year,))#string format
-            line1="Reminder for:"+remainderStr+", added for the time:"+dt_string+"\n"
+            line1="Reminder for:"+reminderStr+", added for the time:"+dt_string+"\n"
             self.parent.txt.writeAndDisplay(line1)
+            todaysDateString=("%s/%s/%s"%(getCurrentTimeToList()[0],getCurrentTimeToList()[1],getCurrentTimeToList()[2],))
+            self.parent.db.add_reminder_to_table(reminderStr,dt_string,todaysDateString)
 
             #we must update the gui.. if necessary
             dateRemainder = datetime.strptime(dt_string,"%d/%m/%Y").date()
             if(todaysDate<=dateRemainder):
-                l=tk.Label(self,text="Activity: "+remainderStr+", on the date: "+dt_string)
+                l=tk.Label(self,text="Activity: "+reminderStr+", on the date: "+dt_string)
                 l.grid(row=self.lastRemainderOnRow,column=3)
                 self.lastRemainderOnRow=self.lastRemainderOnRow+1
     def initialize_remainders(self):
         self.lastRemainderOnRow=0
-        todaysTime=datetime.now()
-        todaysDate=todaysTime.date()
-        for label in self.parent.txt.remainders:
-            dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()         
-            if(todaysDate<=dateRemainder):
-                l=tk.Label(self,text="Activity: "+label[0]+", on the date: "+label[1])
-                l.grid(row=self.lastRemainderOnRow,column=3)
-                self.lastRemainderOnRow=self.lastRemainderOnRow+1
+        print(self.parent.db.rem)
+        if str(type(self.parent.db.rem))!="<class 'NoneType'>":
+            todaysTime=datetime.now()
+            todaysDate=todaysTime.date()
+            for label in self.parent.db.rem:
+                dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()         
+                if(todaysDate<=dateRemainder):
+                    l=tk.Label(self,text="Activity: "+label[0]+", on the date: "+label[1])
+                    l.grid(row=self.lastRemainderOnRow,column=3)
+                    self.lastRemainderOnRow=self.lastRemainderOnRow+1
     
     def dateCallBack(self,*args):
         dayOptions=[]

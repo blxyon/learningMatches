@@ -6,17 +6,20 @@ import activities as act
 import Reminder as rem
 import textHandler as txtHan
 import activities as act
+import dbHandler as dbH
 
 #inspired by
 #https://stackoverflow.com/questions/17466561/best-way-to-structure-a-tkinter-application
 #a very interesting answer here too:
 #https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter#:~:text=One%20way%20to%20switch%20frames,use%20any%20generic%20Frame%20class.
 class MainApplication(tk.Frame):
-    def __init__(self, parent, txt, *args, **kwargs):
+    def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.parent = parent#I guess this says that the parent of itself, the frame is the root, which is passed in the argument called parent
-        self.txt = txt#same here
-        #parent.geometry("450x200+100+100") #this is a bit redundant since the window autoresizes to its content by default
+        self.parent = parent#this sets its parent to the one passed, which in our case is the root
+        self.txt = txtHan.TextHandlerApp()
+        self.db = dbH.DatabaseApp()
+        
+        #parent.geometry("450x200+100+100") #-this is a bit redundant since the window autoresizes to its content by default
         parent.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.grid_rowconfigure(4,weight=1)
         self.grid_columnconfigure(0,weight=1)
@@ -33,12 +36,12 @@ class MainApplication(tk.Frame):
         #when closing it will show the warning box function and therefore end the txt file usage
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.txt.file_object.close()
+            self.db.closedb()
             self.parent.destroy()
 
 if __name__ == "__main__":
-    txt=txtHan.TextHandlerApp()
     root = tk.Tk()
-    app=MainApplication(root,txt)
+    app=MainApplication(root)
     app.pack(side="top", fill="both", expand=True)
     
     root.mainloop()
