@@ -3,6 +3,8 @@ from datetime import datetime
 class ActivityUnitedSystem:
     def __init__(self,parent,*args,**kwargs):
         self.parent=parent
+
+        self.lastScore=self.parent.txt.getLastScore("=")
         
         self.procastinationFr=UnproductiveFr(self)
         self.procastinationFr.grid(row=0,column=0,sticky="news")
@@ -16,15 +18,14 @@ class ActivityUnitedSystem:
         self.productivityFr=ProductiveFr(self)
         self.productivityFr.grid(row=3,column=0,sticky="news")
     def addActivity(self,activity,addVal):
-        #button funct
-        lastScore=self.parent.txt.getLastScore("=")
+        #button function only
         now = datetime.now()
+        self.lastScore=self.lastScore+addVal
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")#string format
-        line1="You have added the activity:"+activity+", at the time: "+dt_string+"| ("+str(addVal)+")"+"\n"
-        line2="Score="+str(lastScore+addVal)+"\n"
+        #4 spaces followed by "-" and the activity
+        line1="    - "+activity+", at the time: "+dt_string+"| ("+str(addVal)+") S="+str(self.lastScore)+"\n"
         self.parent.txt.writeAndDisplay(line1)
-        self.parent.txt.writeAndDisplay(line2)
-        self.scoreFr.configureScore(lastScore+addVal)
+        self.scoreFr.configureScore()
         self.messageFr.pickWhatToDo()
     
     
@@ -72,12 +73,11 @@ class messageFr(tk.Frame):
         self.label.pack()#only one message
     def pickWhatToDo(self):
         #fancy labels
-        lastScore=self.system.parent.txt.getLastScore("=")
-        if(lastScore==0):
+        if(self.system.lastScore==0):
             s=("Great work, keep me balanced!")
-        elif(lastScore>0):
+        elif(self.system.lastScore>0):
             s=("Those are the number of challenges you got to be doing.")
-        elif(lastScore<0):
+        elif(self.system.lastScore<0):
             s=("Great work, you deserve to be playing a match of something! Keep it up!")
     
         self.label.configure(text=s)
@@ -85,12 +85,13 @@ class messageFr(tk.Frame):
 class scoreFr(tk.Frame):
     def __init__(self,system,*args,**kwargs):
         tk.Frame.__init__(self,system.parent,*args,**kwargs)
+        self.system=system
         self.score=tk.Label(self)
-        self.configureScore(system.parent.txt.getLastScore("="))
+        self.configureScore()
         self.score.pack()#only one score
-    def configureScore(self,intScore):
+    def configureScore(self):
         #it helps the to always show a positive value in the GUI
-        if((intScore)>=0):
-            self.score.configure(text=str(intScore))
+        if((self.system.lastScore)>=0):
+            self.score.configure(text=str(self.system.lastScore))
         else:
-            self.score.configure(text=str(-(intScore)))
+            self.score.configure(text=str(-(self.system.lastScore)))

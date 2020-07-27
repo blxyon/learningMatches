@@ -12,6 +12,12 @@ class ReminderFr(tk.Frame):
     def __init__(self,parent,*args,**kwargs):
         tk.Frame.__init__(self,parent,*args,**kwargs)
         self.parent=parent
+
+        self.rowLabels=[]
+        self.removeButtons=[]
+        self.removedRows=[]
+        self.sessionAddedRem=[]
+        
         curYear=getCurrentTimeToList()[2]
         monthOptions = ["Month","1","2","3","4","5","6","7","8","9","10","11","12"]
         yearOptions =[curYear,str(int(curYear)+1),str(int(curYear)+2),str(int(curYear)+3),str(int(curYear)+4)]
@@ -49,23 +55,28 @@ class ReminderFr(tk.Frame):
             day=self.remainderDay.get()
             reminderStr=self.remainderVar.get()
             if(reminderStr==""):
-                remainderStr="_not_specified"
+                reminderStr="_not_specified"
             now = datetime.now()
+            dt_string2 = now.strftime("%d/%m/%Y %H:%M:%S")
             todaysDate=now.date()
             dt_string = ("%s/%s/%s"%(day,month,year,))#string format
-            line1="Reminder for:"+reminderStr+", added for the time:"+dt_string+"\n"
-            self.parent.txt.writeAndDisplay(line1)
+            
             todaysDateString=("%s/%s/%s"%(getCurrentTimeToList()[0],getCurrentTimeToList()[1],getCurrentTimeToList()[2],))
-            self.parent.db.add_reminder_to_table(reminderStr,dt_string,todaysDateString)
+            appendDB=self.parent.db.add_reminder_to_table(reminderStr,dt_string,todaysDateString)
 
             #we must update the gui.. if necessary
             dateRemainder = datetime.strptime(dt_string,"%d/%m/%Y").date()
-            if(todaysDate<=dateRemainder):
-                l=tk.Label(self,text="Activity: "+reminderStr+", on the date: "+dt_string)
-                l.grid(row=self.lastRemainderOnRow,column=3)
-                self.lastRemainderOnRow=self.lastRemainderOnRow+1
+            if(todaysDate<=dateRemainder and appendDB==True):
+                
+                line1="    * "+reminderStr+", added for the time:"+dt_string+", at:"+dt_string2+"\n"
+                self.parent.txt.writeAndDisplay(line1)
+                self.sessionAddedRem.append((reminderStr,dt_string))
+                self.removeAllRem()
+                self.initialize_remainders()
     def initialize_remainders(self):
         self.lastRemainderOnRow=0
+        self.rowLabels=[]
+        self.removeButtons=[]
         print(self.parent.db.rem)
         if str(type(self.parent.db.rem))!="<class 'NoneType'>":
             todaysTime=datetime.now()
@@ -73,10 +84,33 @@ class ReminderFr(tk.Frame):
             for label in self.parent.db.rem:
                 dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()         
                 if(todaysDate<=dateRemainder):
-                    l=tk.Label(self,text="Activity: "+label[0]+", on the date: "+label[1])
+                    if label in self.sessionAddedRem:
+                        l=tk.Label(self,text="*Reminder: "+label[0]+", on the date: "+label[1])
+                    else:
+                        l=tk.Label(self,text="Reminder: "+label[0]+", on the date: "+label[1])
                     l.grid(row=self.lastRemainderOnRow,column=3)
+                    self.rowLabels.append(l)
+                    
+                    b=tk.Button(self,text="Remove",command=lambda index=self.lastRemainderOnRow,remStr=label[0], dd=label[1]:self.deleteReminder(index,remStr,dd))
+                    self.removeButtons.append(b)
+                    self.removeButtons[len(self.removeButtons)-1].grid(row=self.lastRemainderOnRow,column=4)
+                
                     self.lastRemainderOnRow=self.lastRemainderOnRow+1
-    
+    def deleteReminder(self,index,desc,due_date):
+        self.parent.db.remove_reminder(desc,due_date)
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        line1="    x "+desc+", added for the time:"+due_date+", removed at:"+dt_string+"\n"
+        self.parent.txt.writeAndDisplay(line1)
+        
+        self.removeAllRem()
+        self.initialize_remainders()
+    def removeAllRem(self):
+        for i in range(0,len(self.rowLabels)):
+            self.rowLabels[i].destroy()
+            self.removeButtons[i].destroy()
+            
+            
     def dateCallBack(self,*args):
         dayOptions=[]
         if(self.remainderMonth.get()!="Month"):

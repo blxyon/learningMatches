@@ -1,4 +1,4 @@
-**Version 1.2.0**
+**Version 1.3.0**
 
 A Python 3.8 program which will be tracking the number of unproductive and productive actions which 
 you are doing based on a score. The more productive you are the more positive the app message will be.
@@ -18,7 +18,9 @@ Case scenario example:
 
 
 Another thing to mention is that the txt file will only be updated after you closed the application. In
-order to check the current state of "logGames.txt" check your console.
+order to check the current state of "logGames.txt" check your console. 
+
+If you force kill the app or shutdown your computer while the app runs the data input in the particular session the txt may get corrupted!
 
 ## Contributors
 
@@ -26,6 +28,11 @@ order to check the current state of "logGames.txt" check your console.
 
 ---
 ## Updates
+
+(V1.3.0) 
+- Reminders manager deleting and database link functionality to enhance functionality.
+- Text document structure changed for better visualisation
+- New reminders added have an asterisk in the beginning for visualistion
 
 (V1.2.0) Reminders manager added
 
