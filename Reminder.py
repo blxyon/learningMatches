@@ -100,10 +100,18 @@ class ReminderFr(tk.Frame):
             for label in self.parent.db.rem:
                 dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()         
                 if(todaysDate<=dateRemainder):
-                    if label in self.sessionAddedRem:
-                        l=tk.Label(self,text="*Reminder: "+label[0]+", on the date: "+label[1])
+                    colour="white"
+                    if todaysDate==dateRemainder:
+                        todayStr="Today!- "
+                        colour="red"
                     else:
-                        l=tk.Label(self,text="Reminder: "+label[0]+", on the date: "+label[1])
+                        if todaysDate==(dateRemainder-timedelta(days=1)):
+                            colour="yellow"
+                        todayStr=""
+                    if label in self.sessionAddedRem:
+                        l=tk.Label(self,text=todayStr+"*Reminder: "+label[0]+", on the date: "+label[1],bg=colour)
+                    else:
+                        l=tk.Label(self,text=todayStr+"Reminder: "+label[0]+", on the date: "+label[1],bg=colour)
                     l.grid(row=self.lastRemainderOnRow,column=3)
                     self.rowLabels.append(l)
                     
