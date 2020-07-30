@@ -1,4 +1,4 @@
-**Version 1.3.0**
+**Version 1.3.1**
 
 A Python 3.8 program which will be tracking the number of unproductive and productive actions which 
 you are doing based on a score. The more productive you are the more positive the app message will be.
@@ -28,6 +28,11 @@ If you force kill the app or shutdown your computer while the app runs the data 
 
 ---
 ## Updates
+
+(V1.3.1)
+- Colours ilustrating the most appropriate due reminders. 
+A reminder being red means it is due today and if it is yellow it is due tommorow.
+Otherwise it will be white.
 
 (V1.3.0) 
 - Reminders manager deleting and database link functionality to enhance functionality.
