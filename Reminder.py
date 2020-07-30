@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta 
 import tkinter as tk
 
 
@@ -23,8 +24,11 @@ class ReminderFr(tk.Frame):
         yearOptions =[curYear,str(int(curYear)+1),str(int(curYear)+2),str(int(curYear)+3),str(int(curYear)+4)]
         dayOptions=["Select Month"]
 
-        self.addRemainderButton=tk.Button(self,text="Add remainder",command=lambda:self.add_remainder())
+        self.addRemainderButton=tk.Button(self,text="Add remainder",command=lambda:self.add_remainder(butType="gen"))
         self.addRemainderButton.grid(row=2,column=0)
+
+        self.addRem1wEEK=tk.Button(self,text="Add remainder for a week from now",command=lambda:self.add_remainder(butType="1week"))
+        self.addRem1wEEK.grid(row=3,column=0)
         
         self.remainderVar = tk.StringVar()
         self.addTextBox=tk.Entry(self,textvariable=self.remainderVar)
@@ -48,36 +52,48 @@ class ReminderFr(tk.Frame):
         self.dayOption.grid(row=0,column=2,sticky="w")
 
         self.initialize_remainders()
-    def add_remainder(self):
+    def add_remainder(self,butType):
         month=self.remainderMonth.get()
-        if(month!="Month"):
+        
+        now = datetime.now()
+        dt_string2 = now.strftime("%d/%m/%Y %H:%M:%S")
+        #
+        
+        reminderStr=self.remainderVar.get()
+        if(reminderStr==""):
+            reminderStr="_not_specified"
+
+        if(month!="Month" and butType=="gen"):
             year=self.remainderYear.get()
             day=self.remainderDay.get()
-            reminderStr=self.remainderVar.get()
-            if(reminderStr==""):
-                reminderStr="_not_specified"
-            now = datetime.now()
-            dt_string2 = now.strftime("%d/%m/%Y %H:%M:%S")
-            todaysDate=now.date()
+            
             dt_string = ("%s/%s/%s"%(day,month,year,))#string format
             
-            todaysDateString=("%s/%s/%s"%(getCurrentTimeToList()[0],getCurrentTimeToList()[1],getCurrentTimeToList()[2],))
-            appendDB=self.parent.db.add_reminder_to_table(reminderStr,dt_string,todaysDateString)
-
-            #we must update the gui.. if necessary
-            dateRemainder = datetime.strptime(dt_string,"%d/%m/%Y").date()
-            if(todaysDate<=dateRemainder and appendDB==True):
+            self.add_reminder(reminderStr,dt_string,dt_string2)
+        elif(butType=="1week"):
+            newDate=now+timedelta(days=7)
+            dt_string=newDate.strftime("%d/%m/%Y")
+            self.add_reminder(reminderStr,dt_string,dt_string2)
+            
+    def add_reminder(self,reminderStr,dt_string,dt_string2):
+        now = datetime.now()
+        todaysDateString=("%s/%s/%s"%(getCurrentTimeToList()[0],getCurrentTimeToList()[1],getCurrentTimeToList()[2],))
+        appendDB=self.parent.db.add_reminder_to_table(reminderStr,dt_string,todaysDateString)
+        todaysDate=now.date()
+        #we must update the gui.. if necessary
+        dateRemainder = datetime.strptime(dt_string,"%d/%m/%Y").date()
+        if(todaysDate<=dateRemainder and appendDB==True):
                 
-                line1="    * "+reminderStr+", added for the time:"+dt_string+", at:"+dt_string2+"\n"
-                self.parent.txt.writeAndDisplay(line1)
-                self.sessionAddedRem.append((reminderStr,dt_string))
-                self.removeAllRem()
-                self.initialize_remainders()
+            line1="    * "+reminderStr+", added for the time:"+dt_string+", at:"+dt_string2+"\n"
+            self.parent.txt.writeAndDisplay(line1)
+            self.sessionAddedRem.append((reminderStr,dt_string))
+            self.removeAllRem()
+            self.initialize_remainders()   
     def initialize_remainders(self):
         self.lastRemainderOnRow=0
         self.rowLabels=[]
         self.removeButtons=[]
-        print(self.parent.db.rem)
+        #print(self.parent.db.rem)
         if str(type(self.parent.db.rem))!="<class 'NoneType'>":
             todaysTime=datetime.now()
             todaysDate=todaysTime.date()
