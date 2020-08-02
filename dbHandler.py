@@ -33,7 +33,7 @@ class DatabaseApp:
             return True#as in we did append to the db
         return False
     def remove_reminder(self,desc,due_date,repetition):
-        print(self.getSReminder(desc,due_date,repetition))
+        #print(self.getSReminder(desc,due_date,repetition))
         if repetition!=None:#this solves the earlier app versions problems where they would have an empty cell in the days_repetition column
             self.cursorSystemDatabase.execute('''DELETE FROM
                                         Reminder WHERE description=? AND due_date=? AND days_repetition=?''',(desc,due_date,repetition))
