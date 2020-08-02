@@ -179,7 +179,7 @@ class ReminderFr(tk.Frame):
         self.parent.db.remove_reminder(desc,due_date,repetition)
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        line1="    x "+desc+", added for the time:"+due_date+", with repetition:"+repetition+", was removed at:"+dt_string+"\n"
+        line1="    x "+desc+", added for the time:"+due_date+", with repetition:"+str(repetition)+", was removed at:"+dt_string+"\n"
         self.parent.txt.writeAndDisplay(line1)
         
         self.removeAllRem()

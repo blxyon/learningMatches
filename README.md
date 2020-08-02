@@ -39,6 +39,7 @@ after each 2 days.
 - Database structure has changed by adding a new column
 - The program calculates each time it is opened how many days untill the next activity that you are due to be doing
 by the reminders.
+- In the reminders section you may see None and _None. None is for empty cell while _None is for None being displayed in the cell
 
 (V1.3.1)
 - Colours ilustrating the most appropriate due reminders. 
