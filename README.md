@@ -1,4 +1,4 @@
-**Version 1.3.1**
+**Version 1.4.0**
 
 A Python 3.8 program which will be tracking the number of unproductive and productive actions which 
 you are doing based on a score. The more productive you are the more positive the app message will be.
@@ -22,12 +22,23 @@ order to check the current state of "logGames.txt" check your console.
 
 If you force kill the app or shutdown your computer while the app runs the data input in the particular session the txt may get corrupted!
 
+I shall tell you that the app does not autoupdate when the day changes. So I reccomend you closing it and opening it again if you
+will be transiting to the next day for the confusion avoidance.
 ## Contributors
 
 - Valentin I Burlacu <blxyon@yahoo.com>
 
 ---
 ## Updates
+
+(V1.4.0)
+- The repetition of certain reminders in a number of days interval. e.g.: I would like to be running at a 
+period of 2 days begining from tommorow. I will be setting the date to be tommorows date and set the day period
+to 2. The program shall tell you that you begin the running tommorow and it will be repeatedly tell you this
+after each 2 days.
+- Database structure has changed by adding a new column
+- The program calculates each time it is opened how many days untill the next activity that you are due to be doing
+by the reminders.
 
 (V1.3.1)
 - Colours ilustrating the most appropriate due reminders. 
