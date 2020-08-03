@@ -13,7 +13,7 @@ class DatabaseApp:
         self.cursorSystemDatabase.execute('''CREATE TABLE IF NOT EXISTS Reminder 
         (ID_reminder integer PRIMARY KEY, 
         description text, 
-        due_date text, 
+        start_act_date text, 
         creation_date text,
         days_repetition text) 
         ''')
@@ -25,7 +25,7 @@ class DatabaseApp:
             item=(desc,due_date,creation_date,repetition)
             self.cursorSystemDatabase.execute('''INSERT INTO
                                             Reminder(description,
-                                            due_date,
+                                            start_act_date,
                                             creation_date,
                                             days_repetition) values (?,?,?,?)''',item)
             self.commit()
@@ -36,18 +36,18 @@ class DatabaseApp:
         #print(self.getSReminder(desc,due_date,repetition))
         if repetition!=None:#this solves the earlier app versions problems where they would have an empty cell in the days_repetition column
             self.cursorSystemDatabase.execute('''DELETE FROM
-                                        Reminder WHERE description=? AND due_date=? AND days_repetition=?''',(desc,due_date,repetition))
+                                        Reminder WHERE description=? AND start_act_date=? AND days_repetition=?''',(desc,due_date,repetition))
         else:
             self.cursorSystemDatabase.execute('''DELETE FROM
-                                        Reminder WHERE description=? AND due_date=? AND days_repetition is NULL''',(desc,due_date))
+                                        Reminder WHERE description=? AND start_act_date=? AND days_repetition is NULL''',(desc,due_date))
         self.commit()
         self.select_all_reminders()
     def select_all_reminders(self):
-        self.cursorSystemDatabase.execute('''SELECT description,due_date,days_repetition from Reminder ORDER BY ID_reminder DESC''')#order desc to ensure we show the most recent added ones
+        self.cursorSystemDatabase.execute('''SELECT description,start_act_date,days_repetition from Reminder ORDER BY ID_reminder DESC''')#order desc to ensure we show the most recent added ones
         self.rem=self.cursorSystemDatabase.fetchall()
     def getSReminder(self,desc,due_date,repetition):
-        self.cursorSystemDatabase.execute('''SELECT description,due_date from Reminder WHERE
-                                                description=? AND due_date=? AND days_repetition=?''',(desc,due_date,repetition,))
+        self.cursorSystemDatabase.execute('''SELECT description,start_act_date from Reminder WHERE
+                                                description=? AND start_act_date=? AND days_repetition=?''',(desc,due_date,repetition,))
         selRem=self.cursorSystemDatabase.fetchall()
         return selRem
     def closedb(self): 
