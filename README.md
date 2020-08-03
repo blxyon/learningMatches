@@ -24,6 +24,9 @@ If you force kill the app or shutdown your computer while the app runs the data 
 
 I shall tell you that the app does not autoupdate when the day changes. So I reccomend you closing it and opening it again if you
 will be transiting to the next day for the confusion avoidance.
+
+If you click remove on a reminder you will remove it from the database. You do not need to delete it! When its start date passes the reminder won't show anymore.
+
 ## Contributors
 
 - Valentin I Burlacu <blxyon@yahoo.com>
