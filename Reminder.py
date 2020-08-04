@@ -148,7 +148,7 @@ class ReminderFr(tk.Frame):
                 noDaysLeft=daysBetween%rep
                 
                 #print("noDaysLeft:"+str(noDaysLeft))
-                newDate=todaysDate+timedelta(days=-noDaysLeft+rep)
+                newDate=startDate+timedelta(days=daysBetween+noDaysLeft)
                 return newDate
         else:
             return startDate
