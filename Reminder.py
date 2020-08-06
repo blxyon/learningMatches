@@ -145,8 +145,13 @@ class ReminderFr(tk.Frame):
                     return startDate#they are the same so we shall return the reminder to be for today as well
                 #print("daysbetween:"+str(daysBetween))
                 #print(str(startDate)+", "+str(todaysDate))
-                noDaysLeft=daysBetween%rep
+                todaysDateIndex=daysBetween%rep# if start date is 2, rep=3 and we are in 6th then the index shall be 1
                 
+
+                if todaysDateIndex!=0:# assuming it will never be negative
+                    noDaysLeft=rep-todaysDateIndex
+                else:
+                    noDaysLeft=0
                 #print("noDaysLeft:"+str(noDaysLeft))
                 newDate=startDate+timedelta(days=daysBetween+noDaysLeft)
                 return newDate
