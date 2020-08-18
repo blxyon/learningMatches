@@ -43,7 +43,7 @@ class DatabaseApp:
         self.commit()
         self.select_all_reminders()
     def select_all_reminders(self):
-        self.cursorSystemDatabase.execute('''SELECT description,start_act_date,days_repetition from Reminder ORDER BY ID_reminder DESC''')#order desc to ensure we show the most recent added ones
+        self.cursorSystemDatabase.execute('''SELECT description,start_act_date,creation_date,days_repetition from Reminder ORDER BY ID_reminder DESC''')#order desc to ensure we show the most recent added ones
         self.rem=self.cursorSystemDatabase.fetchall()
     def getSReminder(self,desc,due_date,repetition):
         self.cursorSystemDatabase.execute('''SELECT description,start_act_date from Reminder WHERE

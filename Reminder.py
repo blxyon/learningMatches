@@ -95,6 +95,7 @@ class ReminderFr(tk.Frame):
             dateReminderStr=args[1]
             nowDateStrHour=args[2]
             repetition=args[3]
+            print(repetition)
             
             now = datetime.now()
             todaysDateString=now.strftime("%d/%m/%Y")#("%s/%s/%s"%(getCurrentTimeToList()[0],getCurrentTimeToList()[1],getCurrentTimeToList()[2],))
@@ -114,7 +115,7 @@ class ReminderFr(tk.Frame):
     def checkColourToUse(self,todaysDate,dateRemainder):
         colour="white"
         if todaysDate==dateRemainder:
-            todayStr="Today!- "
+            todayStr="Today!- "#can be confused with today's date----------------------as the var name implies
             colour="red"
         else:
             if todaysDate==(dateRemainder-timedelta(days=1)):
@@ -123,10 +124,14 @@ class ReminderFr(tk.Frame):
         return (colour,todayStr)
     def formatLabel(self,todayStr,label,dateReminder,colour):
         if str(type(label[2]))=="<class 'NoneType'>":
-            rep="_None"
+            rep="_None"#this is how we distinguish between an empty cell and a cell that has "None" inside it
         else:
-            rep=label[2]
-        
+            rep=label[len(label)-1]
+
+        #print("here -")
+        #print(label)
+        #print(self.sessionAddedRem)
+            
         if label in self.sessionAddedRem:
             l=tk.Label(self,text=todayStr+"*Reminder: "+label[0]+", on the date: "+str(dateReminder)+", repeats every: "+rep+" days",bg=colour)
         else:
@@ -168,14 +173,16 @@ class ReminderFr(tk.Frame):
             for label in self.parent.db.rem:
                 #print(label)
                 dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()
-                dateRemainder = self.calculateCurrentRep(label[2],dateRemainder,todaysDate)
+                dateRemainder = self.calculateCurrentRep(label[len(label)-1],dateRemainder,todaysDate)             
                 if(todaysDate<=dateRemainder):
                     colour, todayStr=self.checkColourToUse(todaysDate,dateRemainder)
+                    
+                    #bare in mind that dateRemainder is not always the third column in the reminder table, it is formated to the nearest due date
                     l=self.formatLabel(todayStr,label,dateRemainder,colour)
                     l.grid(row=self.lastRemainderOnRow,column=3)
                     self.rowLabels.append(l)
                     
-                    b=tk.Button(self,text="Remove",command=lambda index=self.lastRemainderOnRow,remStr=label[0], dd=label[1], rep=label[2]:self.deleteReminder(index,remStr,dd,rep))
+                    b=tk.Button(self,text="Remove",command=lambda index=self.lastRemainderOnRow,remStr=label[0], dd=label[1], rep=label[len(label)-1]:self.deleteReminder(index,remStr,dd,rep))
                     self.removeButtons.append(b)
                     self.removeButtons[len(self.removeButtons)-1].grid(row=self.lastRemainderOnRow,column=4)
                 
