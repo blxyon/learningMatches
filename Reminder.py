@@ -119,6 +119,8 @@ class ReminderFr(tk.Frame):
             colour="red"
         else:
             if todaysDate==(dateRemainder-timedelta(days=1)):
+                colour="orange"
+            elif todaysDate==(dateRemainder-timedelta(days=2)):
                 colour="yellow"
             todayStr=""
         return (colour,todayStr)
