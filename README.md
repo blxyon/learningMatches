@@ -34,7 +34,7 @@ If you click remove on a reminder you will remove it from the database. You do n
 ---
 ## Updates
 (v1.4.1)
--Changed the colour to orange for 1 day left reminder and yellow for 2 days left for the reminder.
+- Changed the colour to orange for 1 day left reminder and yellow for 2 days left for the reminder.
 
 (V1.4.0)
 - The repetition of certain reminders in a number of days interval. e.g.: I would like to be running at a 
