@@ -177,8 +177,12 @@ class ReminderFr(tk.Frame):
                 dateRemainder = datetime.strptime(label[1],"%d/%m/%Y").date()
                 dateRemainder = self.calculateCurrentRep(label[len(label)-1],dateRemainder,todaysDate)             
                 if(todaysDate<=dateRemainder):
-                    colour, todayStr=self.checkColourToUse(todaysDate,dateRemainder)
-                    
+                    if(label[-1]=="1"):
+                        colour="blue"
+                        todayStr=""
+                    else:   
+                        colour, todayStr=self.checkColourToUse(todaysDate,dateRemainder)
+
                     #bare in mind that dateRemainder is not always the third column in the reminder table, it is formated to the nearest due date
                     l=self.formatLabel(todayStr,label,dateRemainder,colour)
                     l.grid(row=self.lastRemainderOnRow,column=3)
